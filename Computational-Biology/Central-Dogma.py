@@ -12,8 +12,8 @@ def simulate(variables, t, params):
     k_p = params[2]
     gamma_p = params[3]
 
-    dmdt = k_m - (gamma_m * m)
-    dpdt = (k_p * m) - (gamma_p * p)
+    dmdt = k_m - (gamma_m * m)          # Change in mRNA - function of transcription rate(k_m), mRNA decay rate(gamma_m), and mRNA quantity(m)
+    dpdt = (k_p * m) - (gamma_p * p)    # Change in protein - function of translation rate(k_p), mRNA quantity(m), protein decay rate(gamma_p), and protein quantity(p)
 
     return ([dmdt, dpdt])
     
@@ -31,11 +31,11 @@ def main():
 
     #Run Simulation
     y = odeint(simulate, y0, t, args=(rates,))
+    
+    #Plot Results
     f, ax = plt.subplots(1)
-
-    #Display Results
-    line1, = ax.plot(t,y[:,0], color='b',label="mRNA")
-    line2, = ax.plot(t,y[:,1], color='r',label="Protein")
+    line1, = ax.plot(t,y[:,0], color='b',label="Gene 1")
+    line2, = ax.plot(t,y[:,1], color='r',label="Gene 2")
 
     ax.set_ylabel("Quantity")
     ax.set_xlabel("Time")
