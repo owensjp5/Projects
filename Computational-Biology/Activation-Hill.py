@@ -1,5 +1,5 @@
 # Two Gene ODE Activation Model
-# Gene 1 encodes  transcription factor protein that activates expression of Gene 2
+# Gene 1 encodes for transcription factor that activates expression of Gene 2
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
@@ -20,6 +20,19 @@ def simulate(variables, t, params):
 
     return ([dG1dt, dG2dt])
 
+def getSteadyState(params):
+    k_1 = params[0]
+    gamma_1 = params[1]
+    k_2 = params[2]
+    gamma_2 = params[3]
+    c = params[4]
+    n = params[5]
+
+    G1_SS = k_1/gamma_1
+    G2_SS = ((G1_SS**n/(c**n+G1_SS**n)) * k_2) / gamma_2
+    
+    return G1_SS, G2_SS
+
 def main():
     #Initialize Variables
     y0 = [0,0]
@@ -33,6 +46,8 @@ def main():
     n = 5
 
     params = [k_1, gamma_1, k_2, gamma_2, c, n]
+
+    print("Steady States:", getSteadyState(params))
 
     #Run Simulation
     y = odeint(simulate, y0, t, args=(params,))
