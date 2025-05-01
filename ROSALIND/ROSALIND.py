@@ -118,22 +118,23 @@ def mendelianInheritance(k, m, n):
 ################################
 def translate(sequence):
     codons = {
-    "UUU": "F", "CUU": "L", "AUU": "I", "GUU": "V",
-    "UUC": "F", "CUC": "L", "AUC": "I", "GUC": "V",
-    "UUA": "L", "CUA": "L", "AUA": "I", "GUA": "V",
-    "UUG": "L", "CUG": "L", "AUG": "M", "GUG": "V",
-    "UCU": "S", "CCU": "P", "ACU": "T", "GCU": "A",
-    "UCC": "S", "CCC": "P", "ACC": "T", "GCC": "A",
-    "UCA": "S", "CCA": "P", "ACA": "T", "GCA": "A",
-    "UCG": "S", "CCG": "P", "ACG": "T", "GCG": "A",
-    "UAU": "Y", "CAU": "H", "AAU": "N", "GAU": "D",
-    "UAC": "Y", "CAC": "H", "AAC": "N", "GAC": "D",
-    "UAA": "Stop", "CAA": "Q", "AAA": "K", "GAA": "E",
-    "UAG": "Stop", "CAG": "Q", "AAG": "K", "GAG": "E",
-    "UGU": "C", "CGU": "R", "AGU": "S", "GGU": "G",
-    "UGC": "C", "CGC": "R", "AGC": "S", "GGC": "G",
-    "UGA": "Stop", "CGA": "R", "AGA": "R", "GGA": "G",
-    "UGG": "W", "CGG": "R", "AGG": "R", "GGG": "G"}
+        "UUU": "F", "CUU": "L", "AUU": "I", "GUU": "V",
+        "UUC": "F", "CUC": "L", "AUC": "I", "GUC": "V",
+        "UUA": "L", "CUA": "L", "AUA": "I", "GUA": "V",
+        "UUG": "L", "CUG": "L", "AUG": "M", "GUG": "V",
+        "UCU": "S", "CCU": "P", "ACU": "T", "GCU": "A",
+        "UCC": "S", "CCC": "P", "ACC": "T", "GCC": "A",
+        "UCA": "S", "CCA": "P", "ACA": "T", "GCA": "A",
+        "UCG": "S", "CCG": "P", "ACG": "T", "GCG": "A",
+        "UAU": "Y", "CAU": "H", "AAU": "N", "GAU": "D",
+        "UAC": "Y", "CAC": "H", "AAC": "N", "GAC": "D",
+        "UAA": "Stop", "CAA": "Q", "AAA": "K", "GAA": "E",
+        "UAG": "Stop", "CAG": "Q", "AAG": "K", "GAG": "E",
+        "UGU": "C", "CGU": "R", "AGU": "S", "GGU": "G",
+        "UGC": "C", "CGC": "R", "AGC": "S", "GGC": "G",
+        "UGA": "Stop", "CGA": "R", "AGA": "R", "GGA": "G",
+        "UGG": "W", "CGG": "R", "AGG": "R", "GGG": "G"
+    }
     if sequence[:3] != "AUG":
         print("Error: improper input for translate fn, mRNA sequence does not begin with start codon (AUG)")
         return
@@ -153,6 +154,47 @@ def translate(sequence):
             return
     return protein
 
+##########################
+# Finding a Motif in DNA #
+##########################
+def initializeSkipTable(substring, substringLength, skips, increment=0):
+    if increment == 0:
+        for i in range(substringLength):
+            skips["A"][i] = substringLength
+            skips["C"][i] = substringLength
+            skips["G"][i] = substringLength
+            skips["T"][i] = substringLength
+    for i in range(substringLength):
+        skips[substring[i]][increment] = substringLength-(i+1)
+    if substringLength > 1:
+        return initializeSkipTable(substring[:-1], substringLength-1, skips, increment+1)
+    else:
+        return skips
+
+def alignSubstring(string, substring):
+    length = len(string)
+    substringLength = len(substring)
+
+    # Preprocess Substring to use Bad Character Heuristic from Boyer-Moore
+    skipTable = {"A":{},"C":{},"G":{},"T":{}}
+    skipTable = initializeSkipTable(substring, substringLength, skipTable)
+
+    indices = []
+
+    pos = substringLength-1
+
+    while pos < length:
+        for i in range(substringLength):
+            curNucleotide = string[pos-i]
+            skip = skipTable[curNucleotide][i]
+            pos += skip
+            if skip > 0:
+                break
+            if i == substringLength-1:
+                indices.append(pos-substringLength+2)
+                pos+=1
+    return indices
+
 def main():
     # print(countNucleotides("AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC"))
     # print(transcribeDNA("GATGGAACTTGACTACGTAAATT"))
@@ -162,7 +204,7 @@ def main():
     # print(getHammingDistance("GAGCCTACTAACGGGAT", "CATCGTAATGACGGCCT"))
     # print(mendelianInheritance(2,2,2))
     # print(translate("AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA"))
-    print(substring("GATATATGCATATACTT", "ATAT"))
+    print(alignSubstring("GATATATGCATATACTT", "ATAT"))
 
 if __name__ == "__main__":
     main()
