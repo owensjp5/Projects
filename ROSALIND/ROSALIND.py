@@ -195,6 +195,58 @@ def alignSubstring(string, substring):
                 pos+=1
     return indices
 
+#########################
+# Consensus and Profile #
+#########################
+def profileSequences(seqs):
+    n = len(seqs[1])
+    totalSeqs = len(seqs)
+
+    profile = np.zeros((4,n))
+    consensusString = ""
+
+    for i in range(n):
+        for j in range(totalSeqs):
+            if seqs[j][i] == "A":
+                profile[0][i] += 1
+            if seqs[j][i] == "C":
+                profile[1][i] += 1
+            if seqs[j][i] == "G":
+                profile[2][i] += 1
+            if seqs[j][i] == "T":
+                profile[3][i] += 1
+        consensus = ""
+        max = 0
+        if profile[0][i] > max:
+            max = profile[0][i]
+            consensus = "A"
+        if profile[1][i] > max:
+            max = profile[1][i]
+            consensus = "C"
+        if profile[2][i] > max:
+            max = profile[2][i]
+            consensus = "G"
+        if profile[3][i] > max:
+            max = profile[3][i]
+            consensus = "T"
+        consensusString += consensus
+    print(consensusString)
+    return profile
+
+############################
+# Mortal Fibonacci Rabbits #
+############################
+def mortalRecurrenceRelation(n, m, k=1):
+    buffer = np.zeros(shape=(2,n+1))
+    buffer[0][1] = k
+    # buffer[2][1] = k
+    buffer[1][0] = k
+    for i in range(2,n+1):
+        buffer[1][i-1] = buffer[0][i-1] - buffer[1][i-2]
+        buffer[0][i] = buffer[0][i-1] + (buffer[0][i-1] - buffer[1][i-2]) - buffer[1][i-m-1]
+    print("Total Rabbits: ", buffer[0])
+    return buffer[0][n]
+
 def main():
     # print(countNucleotides("AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC"))
     # print(transcribeDNA("GATGGAACTTGACTACGTAAATT"))
@@ -204,7 +256,9 @@ def main():
     # print(getHammingDistance("GAGCCTACTAACGGGAT", "CATCGTAATGACGGCCT"))
     # print(mendelianInheritance(2,2,2))
     # print(translate("AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA"))
-    print(alignSubstring("GATATATGCATATACTT", "ATAT"))
+    # print(alignSubstring("GATATATGCATATACTT", "ATAT"))
+    # print(profileSequences(["ATCCAGCT","GGGCAACT","ATGGATCT","AAGCAACC","TTGGAACT","ATGCCATT","ATGGCACT"]))
+    print(mortalRecurrenceRelation(18, 3))
 
 if __name__ == "__main__":
     main()
