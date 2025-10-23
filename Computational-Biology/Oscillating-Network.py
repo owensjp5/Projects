@@ -1,4 +1,4 @@
-# 3 Gene Oscillating Network ODE Model
+# 3-Gene Goodwin Oscillator Model
 # Gene 1 activates Gene 2
 # Gene 2 activates Gene 3
 # Gene 3 represses Gene 1
