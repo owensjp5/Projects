@@ -1,8 +1,9 @@
-# Gillespie Stochastic Model
+# Implementation of the Gillespie Stochastic Simulation Algorithm
 import numpy as np
 import matplotlib
 matplotlib.use('tkagg')
 import matplotlib.pyplot as plt
+from scipy.integrate import odeint
 import random
 
 def SSA():

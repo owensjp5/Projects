@@ -1,8 +1,9 @@
-# 3-Gene Stochastic Goodwin Oscillator Model
+# Stochastic 3-Gene Goodwin Oscillator Model
 import numpy as np
 import matplotlib
 matplotlib.use('tkagg')
 import matplotlib.pyplot as plt
+from scipy.integrate import odeint
 import random
 
 def SSA():

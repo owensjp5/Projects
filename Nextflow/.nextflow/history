@@ -1,8 +1,0 @@
-2025-10-25 11:58:52	3.2s	stupefied_rutherford	OK	4112350ead0a08a4d3dd90d84c8f03f6	c17c3574-08c9-4139-b8b3-283c44da5791	nextflow run BWA.nf
-2025-10-25 11:59:21	2.9s	angry_dubinsky	OK	4112350ead0a08a4d3dd90d84c8f03f6	0a86a094-d370-4338-9963-3a1719d8e708	nextflow run script1.nf
-2025-10-25 12:03:46	3.5s	tender_mayer	OK	4112350ead0a08a4d3dd90d84c8f03f6	1483eea8-5855-4583-a4d9-af83423518ec	nextflow run script1.nf
-2025-10-25 12:11:51	3.5s	shrivelled_miescher	OK	aa194f886c6c90a45ae47a528ef1a909	9e2e7903-00ee-4a11-8f27-aab3031f9fa9	nextflow run script2.nf
-2025-10-25 12:14:42	3.5s	ridiculous_cori	OK	4112350ead0a08a4d3dd90d84c8f03f6	ee4144b5-87a5-49e4-8bf5-9f4199f8659a	nextflow run script1.nf
-2025-10-25 12:14:59	3.6s	goofy_watson	OK	1a91ff91538f2fbe0e6a63df18782ccb	533fe80c-7d42-4890-9599-88637e7eafec	nextflow run script2.nf
-2025-10-25 12:19:15	4.1s	happy_goldstine	OK	7a9b5a3a1556b7a96c8408cd1c07f258	95594af4-5f01-4474-86df-f580ae83fb38	nextflow run script3.nf
-2025-10-25 12:25:50	3.8s	curious_pesquet	OK	93007994823b519ce772858b28133c32	3a7f53e6-18d5-4c48-b5d1-fb9b82b4330e	nextflow run script4.nf
