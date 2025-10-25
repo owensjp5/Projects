@@ -1,0 +1,7 @@
+# Dependencies
+.nextflow*
+
+# Logs and Outputs
+work
+index_dir
+ref/*
