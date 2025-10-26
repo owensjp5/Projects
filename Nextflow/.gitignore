@@ -3,5 +3,6 @@
 
 # Logs and Outputs
 work
-index_dir
+bwa/index_dir
 ref/*
+spades/SPADES_OUTPUT
