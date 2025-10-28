@@ -248,6 +248,20 @@ def constructOverlapGraph(fastaFile):
     
     return adjacency_list
 
+################################
+# Calculate Expected Offspring #
+################################
+def expectedOffspring(population):
+    total = 0
+    for i in range(len(population)):
+        if i < 3:
+            total += 2*population[i]
+        elif i==4:
+            total += population[i]
+        elif i == 3:
+            total += 1.5*population[i]
+    return total
+    
 def main():
     # print(countNucleotides("AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC"))
     # print(transcribeDNA("GATGGAACTTGACTACGTAAATT"))
@@ -257,7 +271,8 @@ def main():
     # print(translate("AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA"))
     # print(alignSubstring("GATATATGCATATACTT", "ATAT"))
     # print(profileSequences(["ATCCAGCT","GGGCAACT","ATGGATCT","AAGCAACC","TTGGAACT","ATGCCATT","ATGGCACT"]))
-    print(constructOverlapGraph("reads2.fasta"))
+    # print(constructOverlapGraph("reads2.fasta"))
+    print(expectedOffspring([1, 0, 0, 1, 0, 1]))
 
 if __name__ == "__main__":
     main()
