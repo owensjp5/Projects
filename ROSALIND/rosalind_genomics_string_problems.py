@@ -42,15 +42,24 @@ def getGCContent(sequence):
             GCQuantity += 1
     return GCQuantity/len(sequence) * 100
 
-def readSequencesFromFasta(fastaFilePath):
+def readSequencesFromFasta(fastaFilePath, provideMaxLen=False):
     sequences = {}
     with open(fastaFilePath) as fastaFile:
         for line in fastaFile:
             if line[0] == ">":
-                currentSequence = line
+                currentSequence = line.rstrip()
                 sequences[currentSequence] = ""
             else:
                 sequences[currentSequence] += line.rstrip()
+    if provideMaxLen:
+        max_len = 0
+        longest_seq = ""
+        for seq in sequences:
+            cur_len = len(sequences[seq])
+            if cur_len > max_len:
+                longest_seq = seq
+                max_len = cur_len
+        return sequences, max_len, longest_seq
     return sequences
 
 def computeGCContent(fastaFile):
@@ -71,6 +80,7 @@ def getHammingDistance(seq1, seq2):
     length2 = len(seq2)
     if length1 > 1000 or length2 > 1000:
         print("Error: improper input for getHammingDistance fn, input contains sequence longer than 1 kbp")
+        return
     if length1 != length2:
         print("Error: improper input for getHammingDistance fn, sequences are different length")
         return
@@ -261,7 +271,36 @@ def expectedOffspring(population):
         elif i == 3:
             total += 1.5*population[i]
     return total
+
+##########################
+# Finding a Shared Motif #
+##########################
+def sharedMotif(fastaFile):
+    seqs, max_len, longest_seq = readSequencesFromFasta(fastaFile, True)
     
+    motifs = {}
+
+    for i in range(max_len+1):
+        for j in range(i):
+            if seqs[longest_seq][j:i] not in motifs:
+                motifs[seqs[longest_seq][j:i]] = False
+            shared = True
+            for seq in seqs:
+                if seq != longest_seq:
+                    if alignSubstring(seqs[seq], seqs[longest_seq][j:i]) == []:
+                        shared = False
+                        break
+            if shared:
+                motifs[seqs[longest_seq][j:i]] = True
+    
+    motifs = sorted(list(motifs.items()), key = lambda item: len(item[0]), reverse=True)
+
+    for motif in motifs:
+        if motif[1]:
+            return motif[0]
+        
+    return "No shared motifs"
+
 def main():
     # print(countNucleotides("AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC"))
     # print(transcribeDNA("GATGGAACTTGACTACGTAAATT"))
@@ -272,7 +311,8 @@ def main():
     # print(alignSubstring("GATATATGCATATACTT", "ATAT"))
     # print(profileSequences(["ATCCAGCT","GGGCAACT","ATGGATCT","AAGCAACC","TTGGAACT","ATGCCATT","ATGGCACT"]))
     # print(constructOverlapGraph("reads2.fasta"))
-    print(expectedOffspring([1, 0, 0, 1, 0, 1]))
+    # print(expectedOffspring([1, 0, 0, 1, 0, 1]))
+    print(sharedMotif("reads3.fasta"))
 
 if __name__ == "__main__":
     main()
