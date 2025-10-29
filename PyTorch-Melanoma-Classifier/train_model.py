@@ -22,13 +22,13 @@ def main():
 
     batch_size = 100
 
-    epochs = 3
+    epochs = 10
 
     for epoch in range(epochs):
 
         for i in range(0,len(train_X), batch_size):
 
-            print(f"EPOCH {epoch+1}, proportion complete: {i/len(train_X)}")
+            print(f"EPOCH {epoch+1}, % complete: {i/len(train_X)}")
 
             batch_X = train_X[i: i+batch_size].view(-1, 1, img_size, img_size)
             batch_y = train_y[i: i+batch_size]
