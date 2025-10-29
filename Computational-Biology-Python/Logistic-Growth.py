@@ -32,6 +32,5 @@ def main():
     plt.xlabel("Cells")
     plt.show()
 
-
 if __name__ == "__main__":
     main()
