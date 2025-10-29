@@ -141,6 +141,7 @@ def initializeSkipTable(substring, substringLength, skips, increment=0):
             skips["C"][i] = substringLength
             skips["G"][i] = substringLength
             skips["T"][i] = substringLength
+            skips["U"][i] = substringLength
     for i in range(substringLength):
         skips[substring[i]][increment] = substringLength-(i+1)
     if substringLength > 1:
@@ -153,7 +154,7 @@ def alignSubstring(string, substring):
     substringLength = len(substring)
 
     # Preprocess Substring to use Bad Character Heuristic from Boyer-Moore
-    skipTable = {"A":{},"C":{},"G":{},"T":{}}
+    skipTable = {"A":{},"C":{},"G":{},"T":{},"U":{}}
     skipTable = initializeSkipTable(substring, substringLength, skipTable)
 
     indices = []
