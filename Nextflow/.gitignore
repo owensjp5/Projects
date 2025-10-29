@@ -1,8 +1,10 @@
 # Dependencies
 .nextflow*
+.DS_Store
 
 # Logs and Outputs
 work
 bwa/index_dir
 ref/*
 spades/SPADES_OUTPUT
+spades/.DS_Store
