@@ -8,3 +8,4 @@ bwa/index_dir
 ref/*
 spades/SPADES_OUTPUT
 spades/.DS_Store
+fastqc/fastqc_report
