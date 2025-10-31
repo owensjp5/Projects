@@ -6,6 +6,8 @@
 work
 bwa/index_dir
 ref/*
+spades/fastq/*
 spades/SPADES_OUTPUT
 spades/.DS_Store
 fastqc/fastqc_report
+fastqc/fastq/*
