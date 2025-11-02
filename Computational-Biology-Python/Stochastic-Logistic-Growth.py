@@ -37,7 +37,7 @@ def main():
     t, x = SSA()
 
     plt.plot(t,x)
-    plt.xlabel("Time")
+    plt.xlabel("Time(s)")
     plt.ylabel("Cells")
     plt.show()
 

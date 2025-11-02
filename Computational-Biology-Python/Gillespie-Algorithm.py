@@ -39,7 +39,7 @@ def SSA():
 def main():
     t,X = SSA()
     plt.plot(t,X)
-    plt.xlabel("Time")
+    plt.xlabel("Time(s)")
     plt.ylabel("Quantity mRNA")
     plt.show()
 

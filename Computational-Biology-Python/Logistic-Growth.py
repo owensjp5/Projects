@@ -28,7 +28,7 @@ def main():
     x = odeint(simulate, [x0], t, args=(params,))
 
     plt.plot(t,x[:,0])
-    plt.xlabel("Time")
+    plt.xlabel("Time(s)")
     plt.xlabel("Cells")
     plt.show()
 

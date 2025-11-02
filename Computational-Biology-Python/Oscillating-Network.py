@@ -40,7 +40,7 @@ def main():
     line3, = ax3.plot(t,y[:,2], color='g',label="Gene 3")
 
     ax1.set_ylabel("Quantity")
-    ax1.set_xlabel("Time")
+    ax1.set_xlabel("Time(s)")
 
     ax1.legend(handles=[line1,line2,line3])
 

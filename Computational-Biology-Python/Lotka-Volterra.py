@@ -40,7 +40,7 @@ def main():
 
     ax1.set_ylabel("Fish (hundreds)")
     ax2.set_ylabel("Bears (hundreds)")
-    ax2.set_xlabel("Time")
+    ax2.set_xlabel("Time(s)")
 
     plt.show()
 

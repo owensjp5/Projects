@@ -60,7 +60,7 @@ def main():
     line2, = ax.plot(t,y[:,1], color='r',label="Gene 2")
 
     ax.set_ylabel("Quantity")
-    ax.set_xlabel("Time")
+    ax.set_xlabel("Time(s)")
     ax.legend(handles=[line1,line2])
 
     plt.show()
