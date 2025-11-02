@@ -4,10 +4,15 @@
 
 # Logs and Outputs
 work
-bwa/index_dir
+bwa/
+    index_dir
+    fastq
+    BAM
 ref/*
-spades/fastq/*
-spades/SPADES_OUTPUT
-spades/.DS_Store
-fastqc/fastqc_report
-fastqc/fastq/*
+spades/
+    fastq/*
+    SPADES_OUTPUT
+    .DS_Store
+fastqc/
+    fastqc_report
+    fastq/*
