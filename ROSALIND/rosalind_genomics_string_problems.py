@@ -1,5 +1,6 @@
 # Solutions to Genomics Problems from ROSALIND
 import numpy as np
+import math
 
 ############################
 # Counting DNA Nucleotides #
@@ -302,6 +303,37 @@ def sharedMotif(fastaFile):
         
     return "No shared motifs"
 
+###############################
+# Inferring mRNA from Protein #
+###############################
+def reverseTranslate(protein):
+    codonCounts = {
+        "A": 4,  # Alanine
+        "R": 6,  # Arginine
+        "N": 2,  # Asparagine
+        "D": 2,  # Aspartic acid
+        "C": 2,  # Cysteine
+        "Q": 2,  # Glutamine
+        "E": 2,  # Glutamic acid
+        "G": 4,  # Glycine
+        "H": 2,  # Histidine
+        "I": 3,  # Isoleucine
+        "L": 6,  # Leucine
+        "K": 2,  # Lysine
+        "M": 1,  # Methionine (also start)
+        "F": 2,  # Phenylalanine
+        "P": 4,  # Proline
+        "S": 6,  # Serine
+        "T": 4,  # Threonine
+        "W": 1,  # Tryptophan
+        "Y": 2,  # Tyrosine
+        "V": 4,  # Valine
+    }
+    potentialStrings = math.log10(3) #Initialize as number of stop codons, sum logs to avoid computational constraints of large numbers
+    for AA in protein:
+        potentialStrings += math.log10(codonCounts[AA])
+    return int(10**potentialStrings % 1000000)
+
 def main():
     # print(countNucleotides("AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC"))
     # print(transcribeDNA("GATGGAACTTGACTACGTAAATT"))
@@ -313,7 +345,8 @@ def main():
     # print(profileSequences(["ATCCAGCT","GGGCAACT","ATGGATCT","AAGCAACC","TTGGAACT","ATGCCATT","ATGGCACT"]))
     # print(constructOverlapGraph("reads2.fasta"))
     # print(expectedOffspring([1, 0, 0, 1, 0, 1]))
-    print(sharedMotif("reads3.fasta"))
+    # print(sharedMotif("reads3.fasta"))
+    print(reverseTranslate("CYIQNCPLG")) #Oxytocin Peptide
 
 if __name__ == "__main__":
     main()
