@@ -329,11 +329,14 @@ def reverseTranslate(protein):
         "Y": 2,  # Tyrosine
         "V": 4,  # Valine
     }
-    potentialStrings = math.log10(3) #Initialize as number of stop codons, sum logs to avoid computational constraints of large numbers
+    potentialStrings = 3 #Initialize as 3 to account for all 3 stop codons
     for AA in protein:
-        potentialStrings += math.log10(codonCounts[AA])
-    return int(10**potentialStrings % 1000000)
+        potentialStrings *= codonCounts[AA] % 1000000
+    return potentialStrings
 
+#######################
+# Open Reading Frames #
+#######################
 def ORF(sequence):
     codons = {
         "TTT": "F", "CTT": "L", "ATT": "I", "GTT": "V",
@@ -414,8 +417,8 @@ def main():
     # print(constructOverlapGraph("reads2.fasta"))
     # print(expectedOffspring([1, 0, 0, 1, 0, 1]))
     # print(sharedMotif("reads3.fasta"))
-    # print(reverseTranslate("CYIQNCPLG")) #Oxytocin Peptide
-    print(allORFs("AGCCATGTAGCTAACTCAGGTTACATGGGGATGACCCCGCGACTTGGATTAGAGTCTCTTTTGGAATAAGCCTGAATGATCCGAGTAGCATCTCAG"))
+    print(reverseTranslate("CYIQNCPLG")) #Oxytocin Peptide
+    # print(allORFs("AGCCATGTAGCTAACTCAGGTTACATGGGGATGACCCCGCGACTTGGATTAGAGTCTCTTTTGGAATAAGCCTGAATGATCCGAGTAGCATCTCAG"))
 
 if __name__ == "__main__":
     main()
