@@ -362,7 +362,8 @@ def reverseTranslate(protein):
     }
     potentialStrings = 3 #Initialize as 3 to account for all 3 stop codons
     for AA in protein:
-        potentialStrings *= codonCounts[AA] % 1000000
+        potentialStrings *= codonCounts[AA]
+        potentialStrings = potentialStrings % 1000000
     return potentialStrings
 
 #######################
@@ -398,6 +399,7 @@ def ORF(sequence):
         if isORF1:
             if RF1 in ["TGA","TAG","TAA"]:
                 answers.append(ORF1)
+                ORF1 = ""
                 isORF1 = False
             else:
                 ORF1 += codons[RF1]
@@ -407,6 +409,7 @@ def ORF(sequence):
         if isORF2:
             if RF2 in ["TGA","TAG","TAA"]:
                 answers.append(ORF2)
+                ORF2 = ""
                 isORF2 = False
             else:
                 ORF2 += codons[RF2]
@@ -416,6 +419,7 @@ def ORF(sequence):
         if isORF3:
             if RF3 in ["TGA","TAG","TAA"]:
                 answers.append(ORF3)
+                ORF3 = ""
                 isORF3 = False
             else:
                 ORF3 += codons[RF3]
@@ -448,8 +452,9 @@ def main():
     # print(expectedOffspring([18393, 16056, 18484, 17946, 16151, 18236]))
     # print(sharedMotif("reads3.fasta"))
     # findMotif(["A2Z669", "B5ZC00", "P07204_TRBM_HUMAN", "P20840_SAG1_YEAST"])
-    print(reverseTranslate("CYIQNCPLG")) #Oxytocin Peptide
-    # print(allORFs("AGCCATGTAGCTAACTCAGGTTACATGGGGATGACCCCGCGACTTGGATTAGAGTCTCTTTTGGAATAAGCCTGAATGATCCGAGTAGCATCTCAG"))
+    # print(reverseTranslate("CYIQNCPLG")) #Oxytocin Peptide
+    for ORF in allORFs("CTAAGTCTGTTTGAGGTGGCCAATACCCAAGCGGTATATGAAAACCAGGTTCTGATACGCACTCATCAAGGGGCCGGTCTACCCCTCTCTCAGTAGAGCAATCAGTTGTCGGTGTCGCTTAGCGGTTTGGTCATGCTTGAGGGGTCAAAATTGACGGCGGGTATCACAGCTGGACGAGTGAGTCGGGGATGATCTTAAACCCTAATGAAATTCAAGATAAGGCTGTCCATCAAGCCGCGTCTACCTTAGACATGGTACCAGTCCCCCATTTGCGCCGCCCCCCAAGCTTCTCGGGCTAGAGTTAAATTACCCCAGATAGAGCTCTAGACGTATTTCAATGTCTGCCTTTAAGGCGCATAAAAGAGCTGTGGCTGAGTTACAGCCGCCGTGATTAATCCGCTCGATATCTTACCCTTAGTAATGCCACATAGCACCTCTCCATAGCTATGGAGAGGTGCTATGTGGCATCATGAGGCTGGGTCAAGGCGTTCGGAGGCCTACTGATTTTGGCAAGAGGTGTACCACCTCGAATATGCCCAACTTTTCTATCTAAAAGCCGCTTCACTTTACATAAGAGGTGTATAAGAATCTGCAGATAGGTAAGCGTCCGCATGGCGGCGCCATAACAGTACAGTGCTGCTGATACCCAGTCTTAGCAATATGTTAACCTAATAGGAACGTGAATTTCCTGGATAGTTGTGAGATCCCGGTGGGAGGATGCAATGGCCTCTCATTATTTGACGTCGCGACAAGAGGGCATCGGAAATGAGGAACTCTCGGTGTCTCGCTGCTGAAGCAACTAATCGACGGAACGAGCACTATGGAATGTATGTTCGCTAGGTTAGATTGTAGTCTTCACTAGCGCAACTTGTATGGATGGGACGCTCC"):
+        print(ORF)
 
 if __name__ == "__main__":
     main()
