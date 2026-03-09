@@ -33,15 +33,6 @@ def mendelianInheritance(k, m, n):
     # print("Probabilities should sum to 1, Sum:", probDom+probRec)
     return probDom
 
-def mendelianInheritanceSimulation(k, m, n, epochs=7, numOffspring=1):
-    x = np.array([k, m, n])
-    for _ in range(epochs):
-        AA = np.array([1/2, 1/2, 0 ]) * x[0]
-        Aa = np.array([1/4, 1/2, 1/4]) * x[1]
-        aa = np.array([0, 1/2, 1/2]) * x[2]
-        x = numOffspring * (AA + Aa + aa)
-    print(x)
-
 ############################
 # Mortal Fibonacci Rabbits #
 ############################
@@ -59,8 +50,12 @@ def mortalRecurrenceRelation(n, m, k=1):
 #######################
 # Independent Alleles #
 #######################
-def independentInheritance(k, N):
-    pass
+def simulateIndependentInheritance(k, N):
+    x = np.array([0,1,0])
+    M = np.array([[0.5,0.5,0],[0.25,0.5,0.25],[0,0.5,0.5]])
+    for _ in range(k):
+        x = x @ M
+    return x
 
 def binomialIndependentInheritance(k, N):
     n = 2**k
@@ -79,8 +74,7 @@ def main():
     # print(recurrenceRelationIterative(35, 5))
     # print(mendelianInheritance(29,24,21))
     # print(mortalRecurrenceRelation(93, 20))
-    print(independentInheritance(2,1))
-    print(binomialIndependentInheritance(5,8))
+    print(binomialIndependentInheritance(2,1))
 
 if __name__ == "__main__":
     main()

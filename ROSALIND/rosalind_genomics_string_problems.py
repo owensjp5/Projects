@@ -1,6 +1,7 @@
 # Solutions to Genomics Problems from ROSALIND
 import numpy as np
-import math
+import subprocess
+import re
 
 ############################
 # Counting DNA Nucleotides #
@@ -310,6 +311,29 @@ def sharedMotif(fastaFile):
         
     return "No shared motifs"
 
+###########################
+# Finding a Protein Motif #
+###########################
+def getSeqsFromUnitProt(accessIds):
+    seqs = {}
+    for id in accessIds:
+        accession = id.split("_")[0]
+        path = "https://rest.uniprot.org/uniprotkb/"  + accession + ".fasta"
+        cmd = ["curl", "-L", path]
+        rawSeq = subprocess.run(cmd, capture_output=True, text=True)
+        seq = "".join(rawSeq.stdout.splitlines()[1:])
+        seqs[id] = seq
+    return seqs
+
+def findMotif(accessIds, regex=r"N(?=[^P][ST][^P])"):
+    seqs = getSeqsFromUnitProt(accessIds)
+    for seqName in seqs:
+        loci = re.finditer(regex, seqs[seqName])
+        print(seqName)
+        for loc in loci:
+            print(loc.start()+1, end=" ")
+        print()
+
 ###############################
 # Inferring mRNA from Protein #
 ###############################
@@ -423,6 +447,7 @@ def main():
     # overlapGraph = constructOverlapGraph("reads4.fasta", 3)
     # print(expectedOffspring([18393, 16056, 18484, 17946, 16151, 18236]))
     # print(sharedMotif("reads3.fasta"))
+    # findMotif(["A2Z669", "B5ZC00", "P07204_TRBM_HUMAN", "P20840_SAG1_YEAST"])
     print(reverseTranslate("CYIQNCPLG")) #Oxytocin Peptide
     # print(allORFs("AGCCATGTAGCTAACTCAGGTTACATGGGGATGACCCCGCGACTTGGATTAGAGTCTCTTTTGGAATAAGCCTGAATGATCCGAGTAGCATCTCAG"))
 
