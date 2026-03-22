@@ -251,6 +251,29 @@ def overlap(head, tail):
 
     return max(buffer[size])
 
+def overlapZ(head, tail):
+    # Z algorithm to speed up overlap graph construction + assembly
+    s = tail + "$" + head
+    n = len(s)
+    z = [0] * n
+    l, r = 0, 0
+    for i in range(1, n):
+        if i < r:
+            z[i] = min(r - i, z[i - l])
+        while i + z[i] < n and s[z[i]] == s[i + z[i]]:
+            z[i] += 1
+        if i + z[i] > r:
+            l, r = i, i + z[i]
+
+    # The overlap is the z-value at the position where head starts,
+    # but only if it extends to the end of head
+    head_start = len(tail) + 1
+    for i in range(head_start, n):
+        if z[i] == n - i:  # z-value reaches end of string
+            return n - i   # length of the matching suffix/prefix
+
+    return 0
+
 def constructOverlapGraph(fastaFile, k):
     sequences = readSequencesFromFasta(fastaFile)
     num_sequences = len(sequences)
@@ -260,8 +283,8 @@ def constructOverlapGraph(fastaFile, k):
 
     for i in range(num_sequences):
         for j in range(num_sequences):
-            if j != i:
-                overlap_value = overlap(sequences[sequence_names[i]],sequences[sequence_names[j]])
+            if i!=j:
+                overlap_value = overlapZ(sequences[sequence_names[i]],sequences[sequence_names[j]])
                 if overlap_value == k:
                     adjacency = sequence_names[i] + " " + sequence_names[j] + " " + str(overlap_value)
                     adjacency_list.append(adjacency)
@@ -572,6 +595,51 @@ def string_to_int_list(s):
 def int_list_to_string(lst):
     return " ".join(str(x) for x in lst)
 
+###########################################
+# Genome Assembly as Shortest Superstring #
+###########################################
+def assemble(sequences):
+    sequence_names = list(sequences.keys())
+    num_sequences = len(sequences)
+    edges = {}
+
+    min_length = len(sequences[sequence_names[0]]) / 2
+
+    for i in range(num_sequences):
+        for j in range(num_sequences):
+            if i != j:
+                overlap_value = int(overlapZ(sequences[sequence_names[i]], sequences[sequence_names[j]]))
+                if overlap_value >= min_length:
+                    edges[(sequence_names[i], sequence_names[j])] = overlap_value
+
+    contig_count = 0
+
+    while edges:
+        (seq_name_i, seq_name_j), overlap_value = max(edges.items(), key=lambda x: x[1])
+
+        seq_i = sequences[seq_name_i]
+        seq_j = sequences[seq_name_j]
+
+        contig_count += 1
+        contig_name = ">contig_" + str(contig_count)
+        sequences[contig_name] = seq_i + seq_j[overlap_value:]
+
+        new_edges = {}
+        for (a, b) in edges:
+            if a == seq_name_i or a == seq_name_j or b == seq_name_i or b == seq_name_j:
+                if b == seq_name_i and a != seq_name_j:
+                    new_edges[(a, contig_name)] = edges[(a, b)]
+                elif a == seq_name_j and b != seq_name_i:
+                    new_edges[(contig_name, b)] = edges[(a, b)]
+            else:
+                new_edges[(a, b)] = edges[(a, b)]
+
+        del sequences[seq_name_i]
+        del sequences[seq_name_j]
+        edges = new_edges
+
+    return sequences[list(sequences.keys())[0]] if len(sequences) == 1 else sequences
+
 def main():
     # print(countNucleotides("AGCTATTAGTCTCATCCGTATCACCTGCTTTTATTAGTACTGTTGGGACACCGGTGCAACCTCGCACGCTGCTATAACCCCTTAAGGATACTGAAGTGACGTATGAAGCAGTACCACTGAGTGCCCTAACGATAAGTACATGTGTCCCTGGAAAGGTTCACGGATCTGTTATAATGGAAAACTTACCCACTACCTAGAACAGGTTTCTGGTACGCATAATACGTGCGTTAGGACACGCTTAGGTATAGACCAGGGCGGAGGGTTCATGGAGAGGTTTGGCGAACTTAGCGGAACATTGACGCGAAGTTAGTAGTGTTGCCCTTTTTTAGTCAGTAGCAGACATCCCATAACCACTAAGTGCCCGTCTGAGCGGGATATCTGTAAATAAGTCGACCCAGACCTTGAAGCCCTTCCACCCATTCCAATCACTTTACACTGCGCCACCTTGACGAATCGGCTAGGTGTTCAATGTATAGAGTTAGTGGGAGGTTCCCCAAGTACCCTCGTCGATGATTTAGCAGCTTAATCGCTATGCGAGGTGAAGCGTCTATTGCTGGCAGACGAGTATCAAACGGTGGTATAATTGCAACACTATGCCTTTGTTCCTGGATATCTGTGATATCACTCAAAGGCAGGTGCGTCGACAGAACCAGCTCTTCGCGAAAAGCTTCGCGACGAGCGTCGTTAAAAACACCACAGAGTCATTCTGATGGTCCATTTCGTACTATTTAAAGGCTATCTAATGTTGAAACGATAATAGAAATATGGTACTGAACAGCTTACGATTCTCGGGCAGAGTGAAATCTATGCGAGCTTGCCTTTTAGTAGCGTAGTATCAAGGATAGGACCTTCTAGACGAAGGAACACCAACGGTTTCCCGACCCATAGACATATCTTTGGG"))
     # print(transcribe("GACCACTTCGACTTAACAACTCTTCTCGCCGTTATCCATCCGAAGTGCCACTGGCTTTCAACGCATTATCCATAGATATTGGGACGCATCGCTGTGCGCGAGGATTTGTCTCGACTATATATTTGACAAGTCGATGGGTAAGTCCAGCTTTGTGTAAAATGTTGGAGAAAAGGGACCACGTAGTTCGATGCACATTCACACGTGCTAAGGCGGCCTTTGGTTCAGAGCCGGCTCATAGGCGTAGGAATAGGGATCGCTAATTTGGTGCTTACCCACACCGAAGTAAAGGCCACGGAACACCCTATAGAGATCCGTCAGACCTAGTCAGAAACCTAGGGCGCTCTTAAATGGCGAGACTGAACCACCTCGAGCCGCACTCTCCCCGTAGAGCACAGGGGAGAAAGAATTAAGATAAAGCAACGGATGCCTCTGCTGATGAAACTGAAGACAAATCCTCAGAAGGTAGTGAATGAGATCTTCTAAGTCAGTAAGGCACCTCTGCGTAGCGTTGCGACGAAGCTAAACTGTACACTTAGAGAAGCTCCGTCACCCCAGTTCGACATGTCTTACCTACGGCCTGGCAGGGCGAAGTGTAGATGCAGCATAATCTAGGGCGAGCAATGGACCCCTGAAACGGACACCCCGTCTGAATCGAAGGTGCGGAAGGACACTGAACCTGACTAGGTTTGGCCCCCCAGCCTACCGTCGAATTTTGCACAAACTAGAGGTGTATTTTATATGGGCTTAATCATGGATTGGTATCTGTAGACGACCACTATCCCCCACCGCATGGTACCTTCAAGGCCACACCAAACTAGAAAATGATGAAGAGGGCCCTAGTTGAGGCCGATATGATAGTATTGTGCCTTCGATGACTCTTACTCCGACACCGTTGTCTTTAGCACCCCACGTGGTTCTGGGGTGCGAACTGTACGTCCTATTATTGACGGGGTCTAGAACGCCCTCACGCTA"))
@@ -582,7 +650,7 @@ def main():
     # print(alignSubstring("GCAATCTTTATGATCTTTAGGAGACCGATCTTTATATCTTTAGATCTTTACGGACATCTTTAAGGATCTTTAATCTTTAATCTTTAATCTTTAACAATCTTTACATCTTTAGCGAGTCCTATCTTTACTTGCAAAATCTTTAGATCTTTAATCTTTATACAATCTTTAGTACTTTTATCTTTATATCTTTACCATCTTTACAATCTTTAATCTTTAACCGTCGGATCTTTAGCTATCTTTATGCATCTTTAATCTTTAGTAATCTTTAATCTTTAATCTTTATAATCTTTACATCTTTAGTCGTGATCTTTAGCATCTTTAAATCTTTAGACCCATCTATCTTTAATCTTTACATCTTTAGATCTTTAACAATCTTTAGCAAGGCGCGGAATCTTTAATCTTTAAAATCTTTACGTGCTGATCTTTAATGCCTATCTTTATTCGTTATCTTTAATCTTTAACGCTATCTTTAATCTTTATCATCTTTAATCTTTAATCTTTAGACATCTTTATTGGATCTTTAATCTTTAATCTTTATGACATCTTTACGGATCTTTAGATCTTTATCATCTTTAGTCGGTCATACGCGGGCCTTATCTTTACAATCTTTAAATCTTTAAGAATACACTGATATCTTTATTGATCTTTAAATACTTTATCTTTAAAATCTTTACCATCTTTATATCTTTATATCTTTACATAGAGGCATCTTTAATTAGCAATCTTTAATCTTTAATCTTTACATATCTTTAAAGATCTTTAATCTTTAATCTTTATAGCCCTGATCTTTAAATCTTTAGATCTTTAATCTTTAATATCTTTAAGTCTATCTTTAATCTTTAAATCTTTAATCTTTAAATCTTTATGTCAATCTTTACAATCTTTATGATCTTTAGCATCTTTAATCTTTATCTAGCAATCTTTATGATCTTTAGATATCTTTACGATCTTTACCCCTATCTTTAGGATCTTTAATCTTTAA", "ATCTTTAAT", Display=True))
     # for row in [' '.join(row.astype(int).astype(str)) for row in profileSequences(list(readSequencesFromFasta("reads4.fasta").values()))]:
     #     print(": " + row)
-    # overlapGraph = constructOverlapGraph("reads4.fasta", 3)
+    # overlapGraph = constructOverlapGraph("reads2.fasta", 4)
     # print(expectedOffspring([18393, 16056, 18484, 17946, 16151, 18236]))
     # print(sharedMotif("reads3.fasta"))
     # findMotif(["A2Z669", "B5ZC00", "P07204_TRBM_HUMAN", "P20840_SAG1_YEAST"])
@@ -595,8 +663,9 @@ def main():
     #     print(reversePalindrome[0]+1, reversePalindrome[1]-reversePalindrome[0]+1)
     # print(translate(transcribe(spliceExons("ATGGTCTACATAGCTGACAAACAGCACGTAGCAATCGGTCGAATCTCGAGAGGCATATGGTCACATGATCGGTCGAGCGTGTTTCAAAGTTTGCGCCTAG",["ATCGGTCGAA","ATCGGTCGAGCGTGT"]))))
     # lexicographicalKmers(["A", "C", "G", "T"], 3)
-    print(int_list_to_string(longestIncreasingSubsequence(9, string_to_int_list("8 2 1 6 5 7 4 3 9"))))
-    print(int_list_to_string(longestDecreasingSubsequence(9, string_to_int_list("8 2 1 6 5 7 4 3 9"))))
+    # print(int_list_to_string(longestIncreasingSubsequence(9, string_to_int_list("8 2 1 6 5 7 4 3 9"))))
+    # print(int_list_to_string(longestDecreasingSubsequence(9, string_to_int_list("8 2 1 6 5 7 4 3 9"))))
+    print(assemble(readSequencesFromFasta("reads2.fasta")))
 
 if __name__ == "__main__":
     main()
