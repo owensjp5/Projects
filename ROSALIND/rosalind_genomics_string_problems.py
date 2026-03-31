@@ -605,6 +605,7 @@ def assemble(sequences):
 
     min_length = len(sequences[sequence_names[0]]) / 2
 
+    # Construct overlap graph
     for i in range(num_sequences):
         for j in range(num_sequences):
             if i != j:
@@ -614,6 +615,7 @@ def assemble(sequences):
 
     contig_count = 0
 
+    # Greedily remove edge corresponding to longest overlap
     while edges:
         (seq_name_i, seq_name_j), overlap_value = max(edges.items(), key=lambda x: x[1])
 
@@ -638,7 +640,30 @@ def assemble(sequences):
         del sequences[seq_name_j]
         edges = new_edges
 
-    return sequences[list(sequences.keys())[0]] if len(sequences) == 1 else sequences
+    if len(sequences) == 1:
+        return sequences[list(sequences.keys())[0]] 
+    else:
+        return sequences
+
+##################################################
+# Perfect Matchings and RNA Secondary Structures #
+##################################################
+def perfectMatchings(seq):
+    occ = {"A":0,"C":0,"G":0,"U":0}
+    length = len(seq)
+    for i in range(length):
+        occ[seq[i]] += 1
+    GC_pairs = min(occ["G"],occ["C"])
+    AU_pairs = min(occ["A"],occ["U"])
+    return math.factorial(GC_pairs) * math.factorial(AU_pairs)
+
+########################
+# Partial Permutations #
+########################
+def partialPermutations(n, k):
+    numerator = math.factorial(n)
+    denominator = math.factorial(n-k)
+    return int(numerator // denominator) % 1000000
 
 def main():
     # print(countNucleotides("AGCTATTAGTCTCATCCGTATCACCTGCTTTTATTAGTACTGTTGGGACACCGGTGCAACCTCGCACGCTGCTATAACCCCTTAAGGATACTGAAGTGACGTATGAAGCAGTACCACTGAGTGCCCTAACGATAAGTACATGTGTCCCTGGAAAGGTTCACGGATCTGTTATAATGGAAAACTTACCCACTACCTAGAACAGGTTTCTGGTACGCATAATACGTGCGTTAGGACACGCTTAGGTATAGACCAGGGCGGAGGGTTCATGGAGAGGTTTGGCGAACTTAGCGGAACATTGACGCGAAGTTAGTAGTGTTGCCCTTTTTTAGTCAGTAGCAGACATCCCATAACCACTAAGTGCCCGTCTGAGCGGGATATCTGTAAATAAGTCGACCCAGACCTTGAAGCCCTTCCACCCATTCCAATCACTTTACACTGCGCCACCTTGACGAATCGGCTAGGTGTTCAATGTATAGAGTTAGTGGGAGGTTCCCCAAGTACCCTCGTCGATGATTTAGCAGCTTAATCGCTATGCGAGGTGAAGCGTCTATTGCTGGCAGACGAGTATCAAACGGTGGTATAATTGCAACACTATGCCTTTGTTCCTGGATATCTGTGATATCACTCAAAGGCAGGTGCGTCGACAGAACCAGCTCTTCGCGAAAAGCTTCGCGACGAGCGTCGTTAAAAACACCACAGAGTCATTCTGATGGTCCATTTCGTACTATTTAAAGGCTATCTAATGTTGAAACGATAATAGAAATATGGTACTGAACAGCTTACGATTCTCGGGCAGAGTGAAATCTATGCGAGCTTGCCTTTTAGTAGCGTAGTATCAAGGATAGGACCTTCTAGACGAAGGAACACCAACGGTTTCCCGACCCATAGACATATCTTTGGG"))
@@ -665,7 +690,9 @@ def main():
     # lexicographicalKmers(["A", "C", "G", "T"], 3)
     # print(int_list_to_string(longestIncreasingSubsequence(9, string_to_int_list("8 2 1 6 5 7 4 3 9"))))
     # print(int_list_to_string(longestDecreasingSubsequence(9, string_to_int_list("8 2 1 6 5 7 4 3 9"))))
-    print(assemble(readSequencesFromFasta("reads2.fasta")))
+    # print(assemble(readSequencesFromFasta("reads2.fasta")))
+    # print(perfectMatchings("UGUAGAACCUUGCUCACGAGUGGGGACCUUAGGAUCGACCAGUGCCGAUGUAUGUCGCUGCACAGUCAACGUCCGACC"))
+    print(partialPermutations(83, 10))
 
 if __name__ == "__main__":
     main()
