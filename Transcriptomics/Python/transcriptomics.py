@@ -48,7 +48,6 @@ data = data[to_keep, :]
 genes = genes[to_keep]
 
 # K-S Tests evaluate likelihood that two sample distributions were drawn from the same distribution
-
 p_values = []
 log2_FCs = []
 
@@ -70,11 +69,11 @@ p_values = np.array(p_values)
 log2_FCs = np.array(log2_FCs)
 
 # Bonferroni, multiple test correction
-p_values_bonf = p_values * len(genes)
+p_values_bonf = p_values * len(genes) #multiplying p_values by # of genes helps account for random chance in large dataset
 bonf_threshold = 0.05
 # threshold = 0.05 / len(genes)
 to_keep = (p_values_bonf <= bonf_threshold) & (np.abs(log2_FCs) >= 1)
-# to_keep = (p_values <= threshold) & (np.abs(log2_FCs) >= 1) #Alternate way to perform bonf correction
+# to_keep = (p_values <= threshold) & (np.abs(log2_FCs) >= 1) #Alternate way to perform bonf
 
 sig_genes = genes[to_keep]
 sig_log2_FCs = log2_FCs[to_keep]
@@ -87,3 +86,28 @@ print("DEG Percentage:", len(sig_genes) / len(genes) * 100)
 print()
 print("Number of upregulated DEGs:", np.sum(sig_log2_FCs>0))
 print("Number of downregulated DEGs:", np.sum(sig_log2_FCs<0))
+
+# Save results to CSV      
+output_file = "output/upregulated_DEGs.csv"
+with open(output_file, mode='w', newline='') as file:
+    writer = csv.writer(file)
+    
+    writer.writerow(["gene", "p_value", "log2_FC"])
+
+    for i in range(len(sig_genes)):
+        if sig_log2_FCs[i] > 0:
+            writer.writerow([sig_genes[i], sig_p_values[i], sig_log2_FCs[i]])
+     
+output_file = "output/downregulated_DEGs.csv"
+with open(output_file, mode='w', newline='') as file:
+    writer = csv.writer(file)
+    
+    writer.writerow(["gene", "p_value", "log2_FC"])
+
+    for i in range(len(sig_genes)):
+        if sig_log2_FCs[i] < 0:
+            writer.writerow([sig_genes[i], sig_p_values[i], sig_log2_FCs[i]])
+
+
+# Generate heatmap plot
+sig_data_log2FCs = 
