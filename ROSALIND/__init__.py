@@ -1,5 +1,6 @@
 from .read_fasta import readSequencesFromFasta
 from .convert_list_type import string_to_int_list, int_list_to_string
+from .read_list_input import readListInput
 
 from .count_nucleotides import countNucleotides
 from .transcribe import transcribe
@@ -28,3 +29,4 @@ from .perfect_matchings import perfectMatchings
 from .partial_permutations import partialPermutations
 from .construct_tree import connectEdges
 from .count_subsets import totalSubsets
+from .random_strings import randomString
