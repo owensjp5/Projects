@@ -7,7 +7,7 @@ from scipy.stats import ks_2samp
 import seaborn as sns
 
 # read in gene expression data
-df = pd.read_csv('/Users/jackowens/desktop/Projects/Transcriptomics/ref/GSE150910_gene-level_count_file.csv')
+df = pd.read_csv('/Users/jackowens/desktop/Projects/Transcriptomics/DGEAnalysis/ref/GSE150910_gene-level_count_file.csv')
 
 genes = []
 data = []
@@ -110,4 +110,5 @@ with open(output_file, mode='w', newline='') as file:
 
 
 # Generate heatmap plot
-sig_data_log2FCs = 
+sig_data_log2FCs = np.zeros_like(sig_data)
+

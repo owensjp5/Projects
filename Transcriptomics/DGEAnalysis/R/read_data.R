@@ -5,7 +5,7 @@ rm(list=ls())
 # https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE150910
 
 # load data
-data <- read.table('/Users/jackowens/desktop/Projects/Transcriptomics/ref/GSE150910_gene-level_count_file.csv', header=TRUE, sep=',', row.names=1)
+data <- read.table('/Users/jackowens/desktop/Projects/Transcriptomics/DGEAnalysis/ref/GSE150910_gene-level_count_file.csv', header=TRUE, sep=',', row.names=1)
 
 samples <- colnames(data)
 genes <- rownames(data)
