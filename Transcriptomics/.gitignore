@@ -1,3 +1,5 @@
 DGEAnalysis/ref
 .DS_Store
 DGEAnalysis/Python/output
+DGEAnalysis/R/rds_objects/*
+DGEAnalysis/R/plots
