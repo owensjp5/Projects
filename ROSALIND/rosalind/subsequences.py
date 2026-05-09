@@ -35,3 +35,24 @@ def longestDecreasingSubsequence(n, sequence):
         answer.append(sequence[cur])
         cur = traceback[cur]
     return answer[::-1]
+
+###########################
+# Finding a Spliced Motif #
+###########################
+
+def subsequence(seq, subseq):
+    ans = []
+    subseqLength = len(subseq)
+    subseqPos = 0
+    for seqPos in range(len(seq)):
+        if seq[seqPos] == subseq[subseqPos]:
+            ans.append(seqPos+1)
+            subseqPos += 1
+            if subseqPos == subseqLength:
+                return ans
+
+def main():
+    print(subsequence("ACGTACGTGACG", "GTA"))
+
+if __name__ == "__main__":
+    main()

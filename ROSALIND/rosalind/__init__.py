@@ -23,7 +23,7 @@ from .enumerate_permutations import permutations, signedPermutations
 from .protein_mass import proteinMass
 from .splice_mRNA import spliceExons
 from .enumerate_kmers import lexicographicalKmers
-from .longest_subsequences import longestIncreasingSubsequence, longestDecreasingSubsequence
+from .subsequences import longestIncreasingSubsequence, longestDecreasingSubsequence, subsequence
 from .genome_assembly import assemble
 from .perfect_matchings import perfectMatchings
 from .partial_permutations import partialPermutations
