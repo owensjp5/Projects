@@ -31,3 +31,4 @@ from .construct_tree import connectEdges
 from .count_subsets import totalSubsets
 from .random_strings import randomString
 from .catalan_numbers import catalanNumber
+from .error_correction import correctPointMutations
