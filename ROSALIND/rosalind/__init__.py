@@ -33,3 +33,4 @@ from .random_strings import randomString
 from .catalan_numbers import catalanNumber
 from .error_correction import correctPointMutations
 from .counting_ancestors import unrootedBinaryTreeRecursive, unrootedBinaryTree
+from .k_mer_composition import kMerComposition
