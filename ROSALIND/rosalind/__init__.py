@@ -15,7 +15,7 @@ from .consensus import profileSequences
 from .overlap_graph import constructOverlapGraph
 from .expected_offspring import expectedOffspring
 from .binomial_inheritance import simulateIndependentInheritance, binomialIndependentInheritance
-from .shared_motif import sharedMotif
+from .shared_motifs import sharedMotif, sharedSplicedMotif, longestCommonSubsequence
 from .protein_motif import findMotif
 from .reverse_translate import potentialmRNAs
 from .orf import ORF, allORFs
@@ -34,4 +34,4 @@ from .catalan_numbers import catalanNumber
 from .error_correction import correctPointMutations
 from .counting_ancestors import unrootedBinaryTreeRecursive, unrootedBinaryTree
 from .k_mer_composition import kMerComposition
-from failure_array import failureArray
+from .failure_array import failureArray
