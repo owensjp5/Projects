@@ -1,7 +1,7 @@
 ##########################
 # Finding a Shared Motif #
 ##########################
-from read_fasta import readSequencesFromFasta
+from .read_fasta import readSequencesFromFasta
 
 def sharedMotif(fastaFile):
     seqs, max_len, longest_seq = readSequencesFromFasta(fastaFile, True)

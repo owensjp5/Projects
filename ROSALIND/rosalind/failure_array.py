@@ -1,7 +1,7 @@
 #############################
 # Speeding Up Motif Finding #
 #############################
-from read_fasta import readSequencesFromFasta
+from .read_fasta import readSequencesFromFasta
 
 def failureArray(seq):
     n = len(seq)

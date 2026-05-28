@@ -1,7 +1,6 @@
 ################################
 # Transitions and Translations #
 ################################
-
 def mutationRatio(seq1, seq2):
     purines = ["A","G"]
     pyrimidines = ["C","T"]

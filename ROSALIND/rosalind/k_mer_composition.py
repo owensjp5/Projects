@@ -1,7 +1,7 @@
 #####################
 # k-Mer Composition #
 #####################
-from read_fasta import readSequencesFromFasta
+from .read_fasta import readSequencesFromFasta
 
 def kMerComposition(s, k):
     n = len(s)

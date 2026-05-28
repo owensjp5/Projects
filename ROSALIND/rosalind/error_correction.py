@@ -1,9 +1,9 @@
 #############################
 # Error Correction in Reads #
 #############################
-from read_fasta import readSequencesFromFasta
-from reverse_complement import reverseComplement
-from hamming_distance import getHammingDistance
+from .read_fasta import readSequencesFromFasta
+from .reverse_complement import reverseComplement
+from .hamming_distance import getHammingDistance
 
 def correctPointMutations(fastaFile):
     erroneousReads = []
