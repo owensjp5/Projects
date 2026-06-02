@@ -25,7 +25,7 @@ from .splice_mRNA import spliceExons
 from .enumerate_kmers import lexicographicalKmers, enumerateLexicographicalStrings
 from .subsequences import longestIncreasingSubsequence, longestDecreasingSubsequence, subsequence
 from .genome_assembly import assemble
-from .perfect_matchings import perfectMatchings
+from .perfect_matchings import perfectMatchings, maximumMatchings
 from .partial_permutations import partialPermutations
 from .construct_tree import connectEdges
 from .count_subsets import totalSubsets
