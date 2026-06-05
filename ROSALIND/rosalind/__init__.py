@@ -35,3 +35,4 @@ from .error_correction import correctPointMutations
 from .counting_ancestors import unrootedBinaryTreeRecursive, unrootedBinaryTree
 from .k_mer_composition import kMerComposition
 from .failure_array import failureArray
+from .distance_matrix import distanceMatrix
