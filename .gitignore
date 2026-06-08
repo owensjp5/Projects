@@ -1,3 +1,7 @@
 .vscode
 .Rhistory
 .DS_Store
+__pycache__
+pipeline_outputs/*
+*.txt
+
