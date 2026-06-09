@@ -29,7 +29,7 @@ from .perfect_matchings import perfectMatchings, maximumMatchings
 from .partial_permutations import partialPermutations
 from .construct_tree import connectEdges
 from .count_subsets import totalSubsets
-from .random_strings import randomString
+from .random_strings import randomString, randomMotif
 from .catalan_numbers import catalanNumber
 from .error_correction import correctPointMutations
 from .counting_ancestors import unrootedBinaryTreeRecursive, unrootedBinaryTree
