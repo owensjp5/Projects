@@ -28,7 +28,6 @@ from .genome_assembly import assemble
 from .perfect_matchings import perfectMatchings, maximumMatchings
 from .partial_permutations import partialPermutations
 from .construct_tree import connectEdges
-from .count_subsets import totalSubsets
 from .random_strings import randomString, randomMotif
 from .catalan_numbers import catalanNumber
 from .error_correction import correctPointMutations
@@ -37,4 +36,6 @@ from .k_mer_composition import kMerComposition
 from .failure_array import failureArray
 from .distance_matrix import distanceMatrix
 from .reversal_distance import reversalDistance
+from .count_subsets import totalSubsets
 from .alternative_splicing import alternateSplices
+from .edit_distance import levenshteinDistance
