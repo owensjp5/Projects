@@ -10,7 +10,7 @@ def getGCContent(sequence):
             GCQuantity += 1
     return GCQuantity/len(sequence) * 100
 
-def computeGCContent(fastaFile):
+def getGCContents(fastaFile):
     sequences = readSequencesFromFasta(fastaFile)
     highestGCContent = 0
     for sequence in sequences:

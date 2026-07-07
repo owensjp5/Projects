@@ -2,6 +2,8 @@
 # Locating Restriction Sites #
 ##############################
 from .reverse_complement import reverseComplement
+from .gc_content import getGCContent
+import math
 
 def reversePalindromes(seq):
     complementBase = {"A":"T","T":"A","C":"G","G":"C"}
@@ -19,3 +21,22 @@ def reversePalindromes(seq):
                     else:
                         break
     return reversePalindromes
+
+########################################
+# Expected Number of Restriction Sites #
+########################################
+def expectedRestrictionSites(n, s, A):
+    t = len(s)
+    m = len(A)
+    B = [1] * m
+    for i in range(m):
+        gc = A[i]
+        for base in s:
+            if base == "A" or base == "T":
+                B[i] = B[i] * (0.5 * (1 - gc))
+            else:
+                B[i] = B[i] * (0.5 * gc)
+        B[i] = math.ceil(B[i] * (n-(t-1)) * 1000) / 1000
+    for b in B:
+        print(b, end=" ")
+    print()

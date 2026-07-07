@@ -6,7 +6,7 @@ from .count_nucleotides import countNucleotides
 from .transcribe import transcribe
 from .reverse_complement import reverseComplement
 from .recurrence_relations import recurrenceRelationDP, recurrenceRelationIterative, mortalRecurrenceRelation
-from .gc_content import getGCContent, computeGCContent
+from .gc_content import getGCContent, getGCContents
 from .hamming_distance import getHammingDistance
 from .mendelian_inheritance import dominantOffspringProbability
 from .translate import translate
@@ -21,6 +21,7 @@ from .reverse_translate import potentialmRNAs
 from .orf import ORF, allORFs
 from .enumerate_permutations import permutations, signedPermutations
 from .protein_mass import proteinMass
+from .restriction_sites import reversePalindromes, expectedRestrictionSites
 from .splice_mRNA import spliceExons
 from .enumerate_kmers import lexicographicalKmers, enumerateLexicographicalStrings
 from .subsequences import longestIncreasingSubsequence, longestDecreasingSubsequence, subsequence
