@@ -2,7 +2,6 @@
 # Locating Restriction Sites #
 ##############################
 from .reverse_complement import reverseComplement
-from .gc_content import getGCContent
 import math
 
 def reversePalindromes(seq):

@@ -8,9 +8,7 @@ def perfectMatchings(seq):
     length = len(seq)
     for i in range(length):
         occ[seq[i]] += 1
-    GC_pairs = min(occ["G"],occ["C"])
-    AU_pairs = min(occ["A"],occ["U"])
-    return math.factorial(GC_pairs) * math.factorial(AU_pairs)
+    return math.factorial(occ["C"]) * math.factorial(occ["A"])
 
 ##################################################
 # Maximum Matchings and RNA Secondary Structures #
