@@ -4,12 +4,7 @@
 def motzkinNumber(seq):
     complementBase = {"A":"U","U":"A","C":"G","G":"C","X":"Y","Y":"X"}
     n = len(seq)
-    dp = [[0] * (n+2) for _ in range(n+2)]
-
-    for x in range(1, n+2):
-        dp[x][x-1] = 1
-    for y in range(n):
-        dp[y+1][y+1] = 1
+    dp = [[1] * (n+2) for _ in range(n+2)]
 
     for j in range(1, n):
         for i in range(n-j):
